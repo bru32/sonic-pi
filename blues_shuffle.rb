@@ -1,4 +1,10 @@
+# blues_shuffle.rb
 # My 1st attempt at the blues shuffle progression
+# revisions 1/12/2016 11:33AM
+#   -remove global loop counter
+#   -add alias to assign progression
+#   -add some fx to the main loop
+#
 # Bruce Wernick
 # 1 December 2016
 
@@ -9,9 +15,6 @@
 # 1,4,5        o  .  .  .  .  o  .  o  .  .  .  .  .
 # 1,5,6,b7     o  .  .  .  .  .  .  o  .  o  o  .  .
 # --------------------------------------------------
-
-# global counter
-$v = 0
 
 def beat1(r, n)
   # shuffle beat
@@ -37,14 +40,14 @@ def shuf2(n)
 end
 
 def shuf3(n)
-  # 1 bar: root with 5, 6 and b7
+  # 1 bar: root with 5 and b7
   beat1(n, 7)
   beat1(n, 10)
   beat1(n, 7)
   beat1(n, 10)
 end
 
-def blues8(r)
+def blues8(r, *v)
   # 8 bar blues progression
   # 1 1 4 1
   # 5 4 1 5
@@ -56,16 +59,14 @@ def blues8(r)
   shuf1(r1); shuf1(r1); shuf1(r4); shuf1(r1);
   shuf1(r5); shuf1(r4); shuf1(r1)
   # alternate last bar between shuf3 and shuf4
-  if $v % 2 == 0
+  if v % 2
     shuf2(r5)
   else
     shuf3(r5)
   end
-  $v += 1
 end
 
-
-def blues12_trad(r)
+def blues12_trad(r, *v)
   # 12 bar blues progression
   # 1 1 1 1
   # 4 4 1 1
@@ -79,7 +80,7 @@ def blues12_trad(r)
   shuf1(r5); shuf1(r4); shuf1(r1); shuf1(r1);
 end
 
-def blues12(r)
+def blues12(r, *v)
   # 12 bar blues progression
   # 1 1 4 4
   # 1 1 5 4
@@ -93,7 +94,7 @@ def blues12(r)
   shuf1(r1); shuf1(r5); shuf1(r4); shuf1(r5);
 end
 
-def blues12_quickchange(r)
+def blues12_quick(r, *v)
   # so called quick change progression
   # 1 4 1 1
   # 4 4 1 1
@@ -107,15 +108,18 @@ def blues12_quickchange(r)
   shuf1(r5); shuf1(r4); shuf1(r1); shuf1(r1);
 end
 
-# --------------------------------------------------
 
-# set comment to pick which progression to play
+# --------------------------------------------------
+# set alias p to progression you want to play.
+alias p blues12 # blues8, blues12_trad, blues12, blues12_quick
+
 use_synth :pluck
-r = :G2
-live_loop :moblues do
-  #blues8(r)
-  blues12_trad(r)
-  #blues12(r)
-  #blues12_quickchange(r)
+r = :G2 # root note
+v = 0 # loop counter
+with_fx :reverb, room: 1 do
+  live_loop :moblues do
+    p(r, v)
+    v+=1
+  end
 end
 
