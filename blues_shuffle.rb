@@ -18,7 +18,7 @@
 
 def beat1(r, n)
   # shuffle beat
-  t1,t2,a1,a2 = 0.45,0.25,0.2,0.3
+  t1,t2,a1,a2 = 0.45,0.25,0.4,0.5
   play r,amp: a1; play r+n; sleep t1
   play r,amp: a2; play r+n; sleep t2
 end
@@ -47,7 +47,7 @@ def shuf3(n)
   beat1(n, 10)
 end
 
-def blues8(r, *v)
+def blues8(r, v)
   # 8 bar blues progression
   # 1 1 4 1
   # 5 4 1 5
@@ -111,7 +111,7 @@ end
 
 # --------------------------------------------------
 # set alias p to progression you want to play.
-alias p blues12 # blues8, blues12_trad, blues12, blues12_quick
+alias p blues8 # blues8, blues12_trad, blues12, blues12_quick
 
 use_synth :pluck
 r = :G2 # root note
